@@ -97,16 +97,17 @@ public final class TcpController implements Controller
         String localAddress,
         String remoteAddress)
     {
-        return route(kind, localAddress, remoteAddress, null);
+        return route(kind, localAddress, remoteAddress, null, null);
     }
 
     public CompletableFuture<Long> route(
         RouteKind kind,
         String localAddress,
         String remoteAddress,
+        String tag,
         String extension)
     {
-        return doRoute(kind, localAddress, remoteAddress, extensionRO);
+        return doRoute(kind, localAddress, remoteAddress, tag, extensionRO);
     }
 
     public CompletableFuture<Void> unroute(
@@ -139,6 +140,7 @@ public final class TcpController implements Controller
         RouteKind kind,
         String localAddress,
         String remoteAddress,
+        String tag,
         Flyweight extension)
     {
         final long correlationId = controllerSpi.nextCorrelationId();
@@ -150,6 +152,7 @@ public final class TcpController implements Controller
                                  .role(b -> b.set(role))
                                  .localAddress(localAddress)
                                  .remoteAddress(remoteAddress)
+                                 .tag(tag)
                                  .extension(extension.buffer(), extension.offset(), extension.sizeof())
                                  .build();
 
